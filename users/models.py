@@ -84,11 +84,15 @@ class Applications(models.Model):
     rate = models.IntegerField()
     views_count = models.IntegerField()
 
+    def __str__(self):
+        return f"{self.status} - {self.status.title}"
+
+
     class Meta:
         verbose_name = 'Заявка'
         verbose_name_plural = 'Заявки'
-
         db_table = 'applications'
+        ordering = ("status", 'user')
 
 
 class ExecutiveAuthority(models.Model):
