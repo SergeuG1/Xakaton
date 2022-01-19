@@ -1,0 +1,1 @@
+web: gunicorn Xakaton.wsgi --log-file -
