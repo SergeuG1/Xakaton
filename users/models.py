@@ -1,8 +1,8 @@
-import this
 from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin
 )
+from django_admin_geomap import GeoItem
 
 
 class AdminApplications(models.Model):
@@ -20,7 +20,6 @@ class AdminApplications(models.Model):
     update_date = models.IntegerField()
 
     class Meta:
-        
         db_table = 'admin_applications'
 
 
@@ -47,21 +46,14 @@ class ApplicationStatus(models.Model):
     def get_short_name(self):
         return self.title
     
-    
+
     class Meta:
         verbose_name = 'Статус заявки'
         verbose_name_plural = 'Статусы заявок'
         db_table = 'application_status'
 
 
-
-
-
-
-
-
-class Applications(models.Model):
-
+class Applications(models.Model, GeoItem):
     user = models.ForeignKey('User', models.DO_NOTHING,related_name='user')
     moderator = models.ForeignKey('User', models.DO_NOTHING,related_name='moderator', blank=True, null=True)
     redirect_to_application_id = models.IntegerField(blank=True, null=True)
@@ -86,6 +78,32 @@ class Applications(models.Model):
 
     def __str__(self):
         return f"{self.status} - {self.status.title}"
+
+
+    @property
+    def geomap_longitude(self):
+        return str(self.longitude)
+
+
+    @property
+    def geomap_latitude(self):
+        return str(self.latitude)
+
+
+    @property
+    def geomap_icon(self):
+        return self.default_icon
+
+          
+    @property
+    def geomap_popup_view(self):
+        return "<strong>{}</strong>".format(str(str(application_status[int(self.status.title)-1][1])))
+
+
+    @property
+    def geomap_popup_edit(self):
+        return self.geomap_popup_view
+
 
 
     class Meta:
