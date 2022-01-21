@@ -19,6 +19,10 @@ class AdminApplications(models.Model):
     create_date = models.DateField()
     update_date = models.IntegerField()
 
+    
+    def __str__(self):
+        return self.email
+    
     class Meta:
         db_table = 'admin_applications'
 

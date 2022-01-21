@@ -1,9 +1,9 @@
 from django.contrib import admin
+from django.shortcuts import render
 from users.models import *
 from django_admin_geomap import ModelAdmin
-from django.core.mail import send_mail
-from django.conf import settings
 
+from users.forms import SendEmailFrom
 
 
 
@@ -38,17 +38,12 @@ class AdminApplicationsEmail(admin.ModelAdmin):
     actions = ["bulk_email"]
     def bulk_email(self, request, queryset):
         """ Make all posts published. """
-        data = queryset.all()
-        email_list = []
-        for x in data:
-            email_list.append(x.email)
-        
-        send_mail(
-            subject='A cool subject',
-            message='A stunning message',
-            from_email=settings.EMAIL_HOST_USER,
-            # recipient_list=["Otfonarua@gmail.com",]) 
-            recipient_list=[x.email,]) 
+        data = []
+        for x in queryset:
+            data.append(x.email)
+
+        return render(request, 'admin/send_mail.html',context={'email': data, 'forms':SendEmailFrom})
+      
 
 
 

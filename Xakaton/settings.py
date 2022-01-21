@@ -57,7 +57,7 @@ ROOT_URLCONF = 'Xakaton.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR , """env\Lib\site-packages\django_admin_geomap\\templates"""],
+        'DIRS': [BASE_DIR , "env\Lib\site-packages\django_admin_geomap\\templates", BASE_DIR , "users/templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,7 +126,7 @@ STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'users/static'),
 )
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -145,8 +145,9 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'sendmess0389@gmail.com'
-EMAIL_HOST_PASSWORD = 'pomiwptdmikpluqj'
+EMAIL_HOST_USER = 'etstdsksdksk@gmail.com'
+EMAIL_HOST_PASSWORD = 'ujyieagcamazcycc'
+# EMAIL_HOST_PASSWORD = 'pomiwptdmikpluqj'
 RECIPIENT_ADDRESS="Otfonarua@gmail.com"
 
 
