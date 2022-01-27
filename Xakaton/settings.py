@@ -77,11 +77,38 @@ WSGI_APPLICATION = 'Xakaton.wsgi.application'
 
 DATABASES = {
 
-     'default': {
-        'ENGINE': 'django.db.backends.sqlite3', 
-        'NAME': 'xakaton.sqlite',                      
+    #  'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3', 
+    #     'NAME': 'xakaton.sqlite',                      
        
+    # },
+     'default': {
+        'ENGINE': 'django.db.backends.mysql', 
+        'NAME': 'hackaton',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '164.92.215.12',
+        'PORT': '3306',
+        
     },
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.mysql', 
+    #     'NAME': 'hackaton',
+    #     'USER': 'root',
+    #     'PASSWORD': '',
+    #     'HOST': '164.92.215.12',
+    #     'PORT': '8644',
+        
+    # }
+
+    #    'default': {
+    #     'ENGINE': 'django.db.backends.mysql', 
+    #     'NAME': 'xakaton',
+    #     'USER': 'root',
+    #     'PASSWORD': '',
+    #     'HOST': 'localhost',
+    #     'PORT': '3306',
+    # }
    
 }
 
