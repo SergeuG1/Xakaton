@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import os
 from pathlib import Path
+import environ
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -27,7 +29,7 @@ SECRET_KEY = 'django-insecure-o9er^ntpd4#qn%8n&a)kfsv_d!77g(3+oqh_y1b-l=jcj-j)p*
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-AUTH_USER_MODEL = 'users.User'
+AUTH_USER_MODEL = 'users.Users'
 
 # Application definition
 
@@ -39,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'django_seed',
 ]
 
 MIDDLEWARE = [
@@ -76,39 +79,38 @@ WSGI_APPLICATION = 'Xakaton.wsgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
-
-    #  'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3', 
-    #     'NAME': 'xakaton.sqlite',                      
-       
-    # },
-     'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'hackaton',
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '164.92.215.12',
-        'PORT': '3306',
-        
-    },
+  
     # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql', 
-    #     'NAME': 'hackaton',
-    #     'USER': 'root',
-    #     'PASSWORD': '',
-    #     'HOST': '164.92.215.12',
-    #     'PORT': '8644',
-        
+    # 'ENGINE': 'django.db.backends.mysql', 
+    # 'NAME': 'hackaton',
+    # 'USER': 'root',
+    # 'PASSWORD': '',
+    # 'HOST': '164.92.215.12',
+    # 'PORT': '3306',
     # }
 
+    'default': {
+    'ENGINE': 'django.db.backends.mysql', 
+    'NAME': 'test_django',
+    'USER': 'root',
+    'PASSWORD': '',
+    'HOST': '164.92.215.12',
+    'PORT': '3306',
+    }
+   # local
+    #  'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3', 
+    #     'NAME': 'xakaton2.sqlite',                      
+       
     #    'default': {
     #     'ENGINE': 'django.db.backends.mysql', 
     #     'NAME': 'xakaton',
     #     'USER': 'root',
     #     'PASSWORD': '',
     #     'HOST': 'localhost',
-    #     'PORT': '3306',
+    #     'PORT': '3306'
     # }
+ 
    
 }
 
@@ -162,7 +164,6 @@ STATICFILES_DIRS = (
 
 
 
-import environ
 
 env = environ.Env()
 environ.Env.read_env()
@@ -173,18 +174,5 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'etstdsksdksk@gmail.com'
 EMAIL_HOST_PASSWORD = 'ujyieagcamazcycc'
-# EMAIL_HOST_PASSWORD = 'pomiwptdmikpluqj'
 RECIPIENT_ADDRESS="Otfonarua@gmail.com"
 
-
-# password_good
-# sendmess0389@gmail.com
-# pomiwptdmikpluqj
-
-#  from django.core.mail import send_mail
-# >>> from django.conf import settings
-# >>> send_mail(
-# ...     subject='A cool subject',
-# ...     message='A stunning message',
-# ...     from_email=settings.EMAIL_HOST_USER,
-# ...     recipient_list=[settings.RECIPIENT_ADDRESS])

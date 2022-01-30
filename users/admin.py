@@ -31,9 +31,6 @@ class Admin(ModelAdmin, ApplicationAdmin):
         proxy = True
 
 
-
-
-
 class AdminApplicationsEmail(admin.ModelAdmin):
     actions = ["bulk_email"]
     def bulk_email(self, request, queryset):
@@ -48,11 +45,8 @@ class AdminApplicationsEmail(admin.ModelAdmin):
 
 
 admin.site.register(AdminApplications, AdminApplicationsEmail)
-
-
-
 admin.site.register(Applications, Admin)
-admin.site.register(User)
+admin.site.register(Users)
 admin.site.register(UserProfiles)
 admin.site.register(SavedCoord)
 admin.site.register(Roles)
@@ -62,4 +56,6 @@ admin.site.register(News)
 admin.site.register(ExecutiveAuthority)
 admin.site.register(MailingQueue)
 admin.site.register(ApplicationStatus)
+admin.site.register(ApplicationsCategories)
+admin.site.register(TokenBlocklist)
 

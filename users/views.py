@@ -1,10 +1,8 @@
 from email import message
-from django.http import HttpResponse, HttpResponseBadRequest
+from django.http import HttpResponseBadRequest
 from django.shortcuts import redirect, render
 from django.core.mail import send_mail
 from django.conf import settings
-from .models import User
-from django.core import serializers
 
 
 def send_email(request):
@@ -24,7 +22,6 @@ def send_email(request):
             return redirect("/admin/")
         except Exception as e:    
             return HttpResponseBadRequest(f"<h2>{e.args}</h2>")
-
 
 
 

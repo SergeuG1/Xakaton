@@ -1,2 +1,0 @@
-python manage.py collectstatic
-pip freeze > requirements.txt
