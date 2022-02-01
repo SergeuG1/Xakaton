@@ -10,8 +10,8 @@ from django_admin_geomap import GeoItem
 
 
 class AdminApplications(models.Model):
-    application = models.ForeignKey('Applications', models.DO_NOTHING)
-    administration = models.ForeignKey('ExecutiveAuthority', models.DO_NOTHING)
+    application = models.ForeignKey("Applications", models.DO_NOTHING)
+    administration = models.ForeignKey("ExecutiveAuthority", models.DO_NOTHING)
     task_type = models.IntegerField()
     explanation = models.CharField(max_length=255, blank=True, null=True)
     estimated_date_work = models.DateField(blank=True, null=True)
@@ -19,48 +19,53 @@ class AdminApplications(models.Model):
     name = models.CharField(max_length=50)
     phone = models.CharField(max_length=50, blank=True, null=True)
     email = models.CharField(max_length=30, blank=True, null=True)
-    media_data = models.TextField(db_collation='utf8mb4_bin')
+    media_data = models.TextField(db_collation="utf8mb4_bin")
     create_date = models.DateTimeField()
     update_date = models.DateTimeField()
 
     class Meta:
         managed = False
-        db_table = 'admin_applications'
-        verbose_name = 'Заявка по исполнительному органу'
-        verbose_name_plural = 'Заявки по исполнительным органам'
+        db_table = "admin_applications"
+        verbose_name = "Заявка по исполнительному органу"
+        verbose_name_plural = "Заявки по исполнительным органам"
+
 
 class ApplicationStatus(models.Model):
     title = models.CharField(unique=True, max_length=20)
-    
-    
+
     def __str__(self):
         return self.title
-    
+
     class Meta:
         managed = False
-        db_table = 'application_status'
-        verbose_name = 'Статус заявки'
-        verbose_name_plural = 'Статусы заявок'
+        db_table = "application_status"
+        verbose_name = "Статус заявки"
+        verbose_name_plural = "Статусы заявок"
 
-        
-    def __str__(self):
-        return self.title
 
 class Applications(models.Model, GeoItem):
-    user = models.ForeignKey('Users', models.DO_NOTHING, related_name='user')
-    redirect_to_application = models.ForeignKey('self', models.DO_NOTHING, blank=True, null=True)
+    user = models.ForeignKey("Users", models.DO_NOTHING, related_name="user")
+    redirect_to_application = models.ForeignKey(
+        "self", models.DO_NOTHING, blank=True, null=True
+    )
     address = models.CharField(max_length=255)
     latitude = models.FloatField()
     longitude = models.FloatField()
-    status = models.ForeignKey(ApplicationStatus, models.DO_NOTHING, blank=True, null=True)
-    media_data = models.TextField(db_collation='utf8mb4_bin', blank=True, null=True)
-    applicants_details = models.TextField(db_collation='utf8mb4_bin', blank=True, null=True)
+    status = models.ForeignKey(
+        ApplicationStatus, models.DO_NOTHING, blank=True, null=True
+    )
+    media_data = models.TextField(db_collation="utf8mb4_bin", blank=True, null=True)
+    applicants_details = models.TextField(
+        db_collation="utf8mb4_bin", blank=True, null=True
+    )
     review_date = models.DateTimeField(blank=True, null=True)
     start_date = models.DateTimeField(blank=True, null=True)
     complete_date = models.DateTimeField(blank=True, null=True)
     final_date = models.DateTimeField(blank=True, null=True)
     is_moderate = models.IntegerField()
-    moderator = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True, related_name='moderator')
+    moderator = models.ForeignKey(
+        "Users", models.DO_NOTHING, blank=True, null=True, related_name="moderator"
+    )
     problem_desc = models.CharField(max_length=255, blank=True, null=True)
     base_rate = models.IntegerField()
     source = models.CharField(max_length=255, blank=True, null=True)
@@ -74,76 +79,59 @@ class Applications(models.Model, GeoItem):
 
     class Meta:
         managed = False
-        db_table = 'applications'
-        verbose_name = 'Заявка'
-        verbose_name_plural = 'Заявки'
-        db_table = 'applications'
-        ordering = ("status", 'user')
-
+        db_table = "applications"
+        verbose_name = "Заявка"
+        verbose_name_plural = "Заявки"
+        db_table = "applications"
+        ordering = ("status", "user")
 
     def __str__(self):
         return f"{self.status} - {self.status.title}"
-
 
     @property
     def geomap_longitude(self):
         return str(self.longitude)
 
-
     @property
     def geomap_latitude(self):
         return str(self.latitude)
 
-
     @property
     def geomap_icon(self):
         return self.default_icon
-
-          
-    # @property
-    # def geomap_popup_view(self):
-    #     return "<strong>{}</strong>".format(str(str(application_status[int(self.status.title)-1][1])))
-
 
     @property
     def geomap_popup_edit(self):
         return self.geomap_popup_view
 
 
-
-
-     
-
 class ApplicationsCategories(models.Model):
     application = models.ForeignKey(Applications, models.DO_NOTHING)
-    category = models.ForeignKey('ProblemCategories', models.DO_NOTHING)
+    category = models.ForeignKey("ProblemCategories", models.DO_NOTHING)
 
     def __str__(self):
-        return self.category.title
+        return self.application.user.login
 
     class Meta:
         managed = False
-        db_table = 'applications_categories'
-        verbose_name = 'Категория заявления'
-        verbose_name_plural = 'Категории заявлений'
-
-
+        db_table = "applications_categories"
+        verbose_name = "Категория заявления"
+        verbose_name_plural = "Категории заявлений"
 
 
 class ContractorsProblems(models.Model):
-    problem = models.ForeignKey('ProblemCategories', models.DO_NOTHING)
-    contractor = models.ForeignKey('ExecutiveAuthority', models.DO_NOTHING)
-    
-    
+    problem = models.ForeignKey("ProblemCategories", models.DO_NOTHING)
+    contractor = models.ForeignKey("ExecutiveAuthority", models.DO_NOTHING)
+
     def __str__(self):
         return self.problem
 
-
     class Meta:
         managed = False
-        db_table = 'contractors_problems'
-        verbose_name = 'Исполнительный орган'
-        verbose_name_plural = 'Исполнительные органы'
+        db_table = "contractors_problems"
+        verbose_name = "Исполнительный орган"
+        verbose_name_plural = "Исполнительные органы"
+
 
 class ExecutiveAuthority(models.Model):
     title = models.CharField(max_length=255)
@@ -154,12 +142,14 @@ class ExecutiveAuthority(models.Model):
     hash_tag = models.CharField(max_length=255, blank=True, null=True)
     contact_phone = models.CharField(max_length=20, blank=True, null=True)
     contact_email = models.CharField(max_length=255, blank=True, null=True)
-    contact_email_administration = models.CharField(max_length=255, blank=True, null=True)
+    contact_email_administration = models.CharField(
+        max_length=255, blank=True, null=True
+    )
     tg_id = models.CharField(max_length=255, blank=True, null=True)
     web_site_link = models.CharField(max_length=255, blank=True, null=True)
     additional_information = models.CharField(max_length=255, blank=True, null=True)
     type = models.CharField(max_length=20)
-    work_schedule = models.TextField(db_collation='utf8mb4_bin', blank=True, null=True)
+    work_schedule = models.TextField(db_collation="utf8mb4_bin", blank=True, null=True)
     is_email_alert = models.IntegerField()
     is_sms_alert = models.IntegerField()
     is_generate_daily_report = models.IntegerField()
@@ -171,35 +161,37 @@ class ExecutiveAuthority(models.Model):
     def __str__(self):
         return self.title
 
-
     class Meta:
         managed = False
-        db_table = 'executive_authority'
-        unique_together = (('title', 'hash_tag', 'tg_id'),)
-        verbose_name = 'Исполнительный орган'
-        verbose_name_plural = 'Исполнительные органы'
+        db_table = "executive_authority"
+        unique_together = (("title", "hash_tag", "tg_id"),)
+        verbose_name = "Исполнительный орган"
+        verbose_name_plural = "Исполнительные органы"
+
 
 class MailingQueue(models.Model):
     mailing_address = models.CharField(max_length=30)
     mailing_type = models.IntegerField()
     status = models.IntegerField()
     template_name = models.CharField(max_length=30, blank=True, null=True)
-    template_object = models.TextField(db_collation='utf8mb4_bin', blank=True, null=True)
-    application = models.ForeignKey(Applications, models.DO_NOTHING, blank=True, null=True)
+    template_object = models.TextField(
+        db_collation="utf8mb4_bin", blank=True, null=True
+    )
+    application = models.ForeignKey(
+        Applications, models.DO_NOTHING, blank=True, null=True
+    )
     create_date = models.DateTimeField()
     update_date = models.DateTimeField()
     delete_date = models.DateTimeField(blank=True, null=True)
 
-
     def __str__(self):
         return self.template_name
 
-
     class Meta:
         managed = False
-        db_table = 'mailing_queue'
-        verbose_name = 'Очередь'
-        verbose_name_plural = 'Очередь рассылки'
+        db_table = "mailing_queue"
+        verbose_name = "Очередь"
+        verbose_name_plural = "Очередь рассылки"
 
 
 class News(models.Model):
@@ -212,7 +204,7 @@ class News(models.Model):
     url = models.CharField(max_length=255, blank=True, null=True)
     life_time = models.DateTimeField(blank=True, null=True)
     duration = models.TimeField(blank=True, null=True)
-    admin = models.ForeignKey('Users', models.DO_NOTHING, blank=True, null=True)
+    admin = models.ForeignKey("Users", models.DO_NOTHING, blank=True, null=True)
     is_visible = models.IntegerField()
     create_date = models.DateTimeField()
     update_date = models.DateTimeField()
@@ -222,12 +214,13 @@ class News(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'news'
-        verbose_name = 'Новость'
-        verbose_name_plural = 'Новости'
+        db_table = "news"
+        verbose_name = "Новость"
+        verbose_name_plural = "Новости"
 
     def __str__(self):
         return self.title
+
 
 class ProblemCategories(models.Model):
     title = models.CharField(max_length=100)
@@ -241,15 +234,17 @@ class ProblemCategories(models.Model):
     update_date = models.DateTimeField()
     delete_date = models.DateTimeField(blank=True, null=True)
 
-    class Meta:
-        managed = False
-        db_table = 'problem_categories'
-        unique_together = (('title', 'hash_tag'),)
-
-        verbose_name = 'Категория проблем'
-        verbose_name_plural = 'Категории проблем'
     def __str__(self):
         return self.title
+
+    class Meta:
+        managed = False
+        db_table = "problem_categories"
+        unique_together = (("title", "hash_tag"),)
+
+        verbose_name = "Категория проблем"
+        verbose_name_plural = "Категории проблем"
+
 
 class Regions(models.Model):
     title = models.CharField(max_length=255)
@@ -258,16 +253,17 @@ class Regions(models.Model):
     create_date = models.DateTimeField()
     update_date = models.DateTimeField()
     delete_date = models.DateTimeField(blank=True, null=True)
+
     def __str__(self):
         return self.title
+
     class Meta:
         managed = False
-        db_table = 'regions'
-        verbose_name = 'Регион'
-        verbose_name_plural = 'Регионы'
+        db_table = "regions"
+        verbose_name = "Регион"
+        verbose_name_plural = "Регионы"
 
 
-        
 class Roles(models.Model):
     title = models.CharField(max_length=50)
     mnemomic_name = models.CharField(max_length=50, blank=True, null=True)
@@ -278,34 +274,31 @@ class Roles(models.Model):
     def __str__(self):
         return self.title
 
-
     class Meta:
         managed = False
-        db_table = 'roles'
-        verbose_name = 'Роль'
-        verbose_name_plural = 'Роли'
+        db_table = "roles"
+        verbose_name = "Роль"
+        verbose_name_plural = "Роли"
 
 
 class SavedCoord(models.Model):
-    user = models.ForeignKey('Users', models.DO_NOTHING)
+    user = models.ForeignKey("Users", models.DO_NOTHING)
     latitude = models.FloatField()
     longitude = models.IntegerField()
     explanation = models.CharField(max_length=255, blank=True, null=True)
-    media_data = models.TextField(db_collation='utf8mb4_bin', blank=True, null=True)
+    media_data = models.TextField(db_collation="utf8mb4_bin", blank=True, null=True)
     create_date = models.DateTimeField()
     update_date = models.DateTimeField()
     delete_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
         managed = False
-        db_table = 'saved_coord'
-        verbose_name = 'Координаты'
-        verbose_name_plural = 'Сохраненные координаты'
-
+        db_table = "saved_coord"
+        verbose_name = "Координаты"
+        verbose_name_plural = "Сохраненные координаты"
 
     def __str__(self):
         return self.user
-
 
 
 class TokenBlocklist(models.Model):
@@ -317,13 +310,13 @@ class TokenBlocklist(models.Model):
 
     class Meta:
         managed = False
-        db_table = 'token_blocklist'
-        verbose_name = 'Токен'
-        verbose_name_plural = 'Токены'
+        db_table = "token_blocklist"
+        verbose_name = "Токен"
+        verbose_name_plural = "Токены"
 
 
 class UserProfiles(models.Model):
-    user = models.ForeignKey('Users', models.DO_NOTHING)
+    user = models.ForeignKey("Users", models.DO_NOTHING)
     name = models.CharField(max_length=255)
     phone_number = models.CharField(max_length=20, blank=True, null=True)
     email = models.CharField(max_length=50, blank=True, null=True)
@@ -335,17 +328,16 @@ class UserProfiles(models.Model):
     update_date = models.DateTimeField()
     delete_date = models.DateTimeField(blank=True, null=True)
     rate = models.IntegerField()
-    
-    
+
     def __str__(self):
         return self.name
-   
-   
+
     class Meta:
         managed = False
-        db_table = 'user_profiles'
-        verbose_name = 'Профиль пользователя'
-        verbose_name_plural = 'Профили пользователей'
+        db_table = "user_profiles"
+        verbose_name = "Профиль пользователя"
+        verbose_name_plural = "Профили пользователей"
+
 
 class Users(models.Model):
     login = models.CharField(max_length=50)
@@ -363,14 +355,12 @@ class Users(models.Model):
     update_date = models.DateTimeField(blank=True, null=True)
     create_date = models.DateTimeField(blank=True, null=True)
 
-
     def __str__(self):
         return self.login
 
-
     class Meta:
         managed = False
-        db_table = 'users'
-        unique_together = (('login', 'email_code'),)
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+        db_table = "users"
+        unique_together = (("login", "email_code"),)
+        verbose_name = "Пользователь"
+        verbose_name_plural = "Пользователи"

@@ -87,28 +87,6 @@ DATABASES = {
     'HOST': '164.92.215.12',
     'PORT': '3306',
     }
-
-    # 'default': {
-    # 'ENGINE': 'django.db.backends.mysql', 
-    # 'NAME': 'test_django',
-    # 'USER': 'root',
-    # 'PASSWORD': '',
-    # 'HOST': '164.92.215.12',
-    # 'PORT': '3306',
-    # }
-   # local
-    #  'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3', 
-    #     'NAME': 'xakaton2.sqlite',                      
-       
-    #    'default': {
-    #     'ENGINE': 'django.db.backends.mysql', 
-    #     'NAME': 'xakaton',
-    #     'USER': 'root',
-    #     'PASSWORD': '',
-    #     'HOST': 'localhost',
-    #     'PORT': '3306'
-    # }
  
    
 }
