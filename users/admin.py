@@ -38,16 +38,37 @@ class AdminApplicationsEmail(admin.ModelAdmin):
         return render(request, 'admin/send_mail.html',context={'email': data, 'forms':SendEmailFrom})
 
 
+
+
+
+class RegionAdmin(admin.ModelAdmin):
+    list_display = ("title","create_date")
+    search_fields  = ("title",)
+
+class UserProfilesAdmin(admin.ModelAdmin):
+    list_display = ("name","user","email","rate")
+    search_fields  = ("name","user","phone_number")
+
+class UserAdmin(admin.ModelAdmin):
+    list_display = ("login","password","role")
+    search_fields  = ("login",)
+
+class ExecutiveAuthorityAdmin(admin.ModelAdmin):
+    list_display = ("title","hash_tag","web_site_link")
+    search_fields  = ("title","hash_tag",)
+
+
+
 admin.site.register(AdminApplications, AdminApplicationsEmail)
 admin.site.register(Applications, Admin)
-admin.site.register(Users)
-admin.site.register(UserProfiles)
+admin.site.register(Users, UserAdmin)
+admin.site.register(UserProfiles, UserProfilesAdmin)
 admin.site.register(SavedCoord)
 admin.site.register(Roles)
-admin.site.register(Regions)
+admin.site.register(Regions, RegionAdmin)
 admin.site.register(ProblemCategories)
 admin.site.register(News)
-admin.site.register(ExecutiveAuthority)
+admin.site.register(ExecutiveAuthority, ExecutiveAuthorityAdmin)
 admin.site.register(MailingQueue)
 admin.site.register(ApplicationStatus)
 admin.site.register(ApplicationsCategories)
