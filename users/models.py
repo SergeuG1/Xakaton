@@ -26,15 +26,23 @@ class AdminApplications(models.Model):
     class Meta:
         managed = False
         db_table = 'admin_applications'
-
+        verbose_name = 'Заявка по исполнительному органу'
+        verbose_name_plural = 'Заявки по исполнительным органам'
 
 class ApplicationStatus(models.Model):
     title = models.CharField(unique=True, max_length=20)
-
+    
+    
+    def __str__(self):
+        return self.title
+    
     class Meta:
         managed = False
         db_table = 'application_status'
+        verbose_name = 'Статус заявки'
+        verbose_name_plural = 'Статусы заявок'
 
+        
     def __str__(self):
         return self.title
 
@@ -60,6 +68,9 @@ class Applications(models.Model, GeoItem):
     create_date = models.DateTimeField()
     update_date = models.DateTimeField()
     views_count = models.IntegerField()
+
+    def __str__(self):
+        return self.user
 
     class Meta:
         managed = False
@@ -107,19 +118,32 @@ class ApplicationsCategories(models.Model):
     application = models.ForeignKey(Applications, models.DO_NOTHING)
     category = models.ForeignKey('ProblemCategories', models.DO_NOTHING)
 
+    def __str__(self):
+        return self.category.title
+
     class Meta:
         managed = False
         db_table = 'applications_categories'
+        verbose_name = 'Категория заявления'
+        verbose_name_plural = 'Категории заявлений'
+
+
 
 
 class ContractorsProblems(models.Model):
     problem = models.ForeignKey('ProblemCategories', models.DO_NOTHING)
     contractor = models.ForeignKey('ExecutiveAuthority', models.DO_NOTHING)
+    
+    
+    def __str__(self):
+        return self.problem
+
 
     class Meta:
         managed = False
         db_table = 'contractors_problems'
-
+        verbose_name = 'Исполнительный орган'
+        verbose_name_plural = 'Исполнительные органы'
 
 class ExecutiveAuthority(models.Model):
     title = models.CharField(max_length=255)
@@ -144,11 +168,16 @@ class ExecutiveAuthority(models.Model):
     update_date = models.DateTimeField()
     delete_date = models.DateTimeField(blank=True, null=True)
 
+    def __str__(self):
+        return self.title
+
+
     class Meta:
         managed = False
         db_table = 'executive_authority'
         unique_together = (('title', 'hash_tag', 'tg_id'),)
-
+        verbose_name = 'Исполнительный орган'
+        verbose_name_plural = 'Исполнительные органы'
 
 class MailingQueue(models.Model):
     mailing_address = models.CharField(max_length=30)
@@ -161,9 +190,16 @@ class MailingQueue(models.Model):
     update_date = models.DateTimeField()
     delete_date = models.DateTimeField(blank=True, null=True)
 
+
+    def __str__(self):
+        return self.template_name
+
+
     class Meta:
         managed = False
         db_table = 'mailing_queue'
+        verbose_name = 'Очередь'
+        verbose_name_plural = 'Очередь рассылки'
 
 
 class News(models.Model):
@@ -187,7 +223,11 @@ class News(models.Model):
     class Meta:
         managed = False
         db_table = 'news'
+        verbose_name = 'Новость'
+        verbose_name_plural = 'Новости'
 
+    def __str__(self):
+        return self.title
 
 class ProblemCategories(models.Model):
     title = models.CharField(max_length=100)
@@ -206,6 +246,10 @@ class ProblemCategories(models.Model):
         db_table = 'problem_categories'
         unique_together = (('title', 'hash_tag'),)
 
+        verbose_name = 'Категория проблем'
+        verbose_name_plural = 'Категории проблем'
+    def __str__(self):
+        return self.title
 
 class Regions(models.Model):
     title = models.CharField(max_length=255)
@@ -214,12 +258,16 @@ class Regions(models.Model):
     create_date = models.DateTimeField()
     update_date = models.DateTimeField()
     delete_date = models.DateTimeField(blank=True, null=True)
-
+    def __str__(self):
+        return self.title
     class Meta:
         managed = False
         db_table = 'regions'
+        verbose_name = 'Регион'
+        verbose_name_plural = 'Регионы'
 
 
+        
 class Roles(models.Model):
     title = models.CharField(max_length=50)
     mnemomic_name = models.CharField(max_length=50, blank=True, null=True)
@@ -227,9 +275,15 @@ class Roles(models.Model):
     update_date = models.DateTimeField(blank=True, null=True)
     create_date = models.DateTimeField()
 
+    def __str__(self):
+        return self.title
+
+
     class Meta:
         managed = False
         db_table = 'roles'
+        verbose_name = 'Роль'
+        verbose_name_plural = 'Роли'
 
 
 class SavedCoord(models.Model):
@@ -245,15 +299,27 @@ class SavedCoord(models.Model):
     class Meta:
         managed = False
         db_table = 'saved_coord'
+        verbose_name = 'Координаты'
+        verbose_name_plural = 'Сохраненные координаты'
+
+
+    def __str__(self):
+        return self.user
+
 
 
 class TokenBlocklist(models.Model):
     jti = models.CharField(max_length=36)
     created_at = models.DateTimeField()
 
+    def __str__(self):
+        return self.jti
+
     class Meta:
         managed = False
         db_table = 'token_blocklist'
+        verbose_name = 'Токен'
+        verbose_name_plural = 'Токены'
 
 
 class UserProfiles(models.Model):
@@ -269,11 +335,17 @@ class UserProfiles(models.Model):
     update_date = models.DateTimeField()
     delete_date = models.DateTimeField(blank=True, null=True)
     rate = models.IntegerField()
-
+    
+    
+    def __str__(self):
+        return self.name
+   
+   
     class Meta:
         managed = False
         db_table = 'user_profiles'
-
+        verbose_name = 'Профиль пользователя'
+        verbose_name_plural = 'Профили пользователей'
 
 class Users(models.Model):
     login = models.CharField(max_length=50)
@@ -291,7 +363,14 @@ class Users(models.Model):
     update_date = models.DateTimeField(blank=True, null=True)
     create_date = models.DateTimeField(blank=True, null=True)
 
+
+    def __str__(self):
+        return self.login
+
+
     class Meta:
         managed = False
         db_table = 'users'
         unique_together = (('login', 'email_code'),)
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'

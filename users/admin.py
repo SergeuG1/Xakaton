@@ -8,24 +8,20 @@ from users.forms import SendEmailFrom
 
 
 class ApplicationAdmin(admin.ModelAdmin):
-    list_display = ("create_date","problem_desc","user", "status","get_title")
+    list_display = ("user","create_date","problem_desc", "status")
     search_fields  = ("problem_desc","user__login","status__title")
     list_filter = ("status",)
 
-    def get_title(self, obj):
-        return obj.status.title
-
     
-    get_title.short_description = 'status_code'
-    get_title.admin_order_field = 'status__title'
 
 
 class Admin(ModelAdmin, ApplicationAdmin):
     geomap_field_longitude = "longitude"
     geomap_field_latitude = "latitude"
-    geomap_default_zoom = "3"
+    geomap_default_zoom = "11"
     geomap_item_zoom = "5"
-
+    geomap_default_longitude = "37.8022"
+    geomap_default_latitude = "48.023"
 
     class Meta:
         proxy = True
