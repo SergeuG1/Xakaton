@@ -1,9 +1,12 @@
+# This is an auto-generated Django model module.
+# You'll have to do the following manually to clean this up:
+#   * Rearrange models' order
+#   * Make sure each model has one field with primary_key=True
+#   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
+#   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
+# Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-from django.contrib.auth.models import (
-    BaseUserManager, AbstractBaseUser, PermissionsMixin
-)
 from django_admin_geomap import GeoItem
-
 
 
 class AdminApplications(models.Model):
@@ -21,25 +24,19 @@ class AdminApplications(models.Model):
     update_date = models.DateTimeField()
 
     class Meta:
-        
+        managed = False
         db_table = 'admin_applications'
 
 
 class ApplicationStatus(models.Model):
-    application_status = (
-        (1, 'В обработке'),
-        (2, 'В рассмотрении'),
-        (3, 'Исполнение'),
-        (4, 'Проверка исполнения'),
-        (5, 'Выполнено'),
-        (6, 'Архивная'),
-    )
-    title = models.CharField(unique=True, max_length=20, choices=application_status)
-
+    title = models.CharField(unique=True, max_length=20)
 
     class Meta:
+        managed = False
         db_table = 'application_status'
 
+    def __str__(self):
+        return self.title
 
 class Applications(models.Model, GeoItem):
     user = models.ForeignKey('Users', models.DO_NOTHING, related_name='user')
@@ -63,8 +60,16 @@ class Applications(models.Model, GeoItem):
     create_date = models.DateTimeField()
     update_date = models.DateTimeField()
     views_count = models.IntegerField()
-    
-    
+
+    class Meta:
+        managed = False
+        db_table = 'applications'
+        verbose_name = 'Заявка'
+        verbose_name_plural = 'Заявки'
+        db_table = 'applications'
+        ordering = ("status", 'user')
+
+
     def __str__(self):
         return f"{self.status} - {self.status.title}"
 
@@ -83,22 +88,27 @@ class Applications(models.Model, GeoItem):
     def geomap_icon(self):
         return self.default_icon
 
+          
+    # @property
+    # def geomap_popup_view(self):
+    #     return "<strong>{}</strong>".format(str(str(application_status[int(self.status.title)-1][1])))
+
 
     @property
     def geomap_popup_edit(self):
         return self.geomap_popup_view
 
 
-    class Meta:
-        db_table = 'applications'
 
+
+     
 
 class ApplicationsCategories(models.Model):
     application = models.ForeignKey(Applications, models.DO_NOTHING)
     category = models.ForeignKey('ProblemCategories', models.DO_NOTHING)
 
     class Meta:
-        
+        managed = False
         db_table = 'applications_categories'
 
 
@@ -107,7 +117,7 @@ class ContractorsProblems(models.Model):
     contractor = models.ForeignKey('ExecutiveAuthority', models.DO_NOTHING)
 
     class Meta:
-        
+        managed = False
         db_table = 'contractors_problems'
 
 
@@ -135,7 +145,7 @@ class ExecutiveAuthority(models.Model):
     delete_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        
+        managed = False
         db_table = 'executive_authority'
         unique_together = (('title', 'hash_tag', 'tg_id'),)
 
@@ -152,7 +162,7 @@ class MailingQueue(models.Model):
     delete_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        
+        managed = False
         db_table = 'mailing_queue'
 
 
@@ -175,7 +185,7 @@ class News(models.Model):
     views_count = models.IntegerField()
 
     class Meta:
-        
+        managed = False
         db_table = 'news'
 
 
@@ -192,7 +202,7 @@ class ProblemCategories(models.Model):
     delete_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        
+        managed = False
         db_table = 'problem_categories'
         unique_together = (('title', 'hash_tag'),)
 
@@ -206,25 +216,19 @@ class Regions(models.Model):
     delete_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        
+        managed = False
         db_table = 'regions'
 
 
 class Roles(models.Model):
-    default_roles = (
-        ('guest', 'guest'),
-        ('user', 'user'),
-        ('admin', 'admin'),
-        ('superuser', 'superuser'),
-
-    )
-    title = models.CharField(max_length=50, choices=default_roles, unique=True)
+    title = models.CharField(max_length=50)
     mnemomic_name = models.CharField(max_length=50, blank=True, null=True)
     delete_date = models.DateTimeField(blank=True, null=True)
     update_date = models.DateTimeField(blank=True, null=True)
     create_date = models.DateTimeField()
 
     class Meta:
+        managed = False
         db_table = 'roles'
 
 
@@ -239,7 +243,7 @@ class SavedCoord(models.Model):
     delete_date = models.DateTimeField(blank=True, null=True)
 
     class Meta:
-        
+        managed = False
         db_table = 'saved_coord'
 
 
@@ -248,7 +252,7 @@ class TokenBlocklist(models.Model):
     created_at = models.DateTimeField()
 
     class Meta:
-        
+        managed = False
         db_table = 'token_blocklist'
 
 
@@ -267,39 +271,12 @@ class UserProfiles(models.Model):
     rate = models.IntegerField()
 
     class Meta:
-        
+        managed = False
         db_table = 'user_profiles'
 
 
-
-class UserManager(BaseUserManager):
-
-    def create_user(self, login, password=None):
-        if not login:
-            raise ValueError('Users must have an login')
-
-        user = self.model(
-            login=login)
-
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-    def create_superuser(self, login, password):
-        user = self.create_user(
-            login,
-            password=password
-        )
-        user.is_admin = True
-        user.is_superuser = True
-        user.is_staff = True
-
-        user.save(using=self._db)
-        return user
-
-
-class Users(AbstractBaseUser,PermissionsMixin):
-    login = models.CharField(max_length=50, unique=True)
+class Users(models.Model):
+    login = models.CharField(max_length=50)
     password = models.CharField(max_length=100)
     role = models.ForeignKey(Roles, models.DO_NOTHING, blank=True, null=True)
     sms_code = models.CharField(max_length=4, blank=True, null=True)
@@ -307,29 +284,14 @@ class Users(AbstractBaseUser,PermissionsMixin):
     phone_confirm_date = models.DateTimeField(blank=True, null=True)
     email_confirm_date = models.DateTimeField(blank=True, null=True)
     ban_date = models.DateTimeField(blank=True, null=True)
+    is_active = models.IntegerField()
+    is_admin = models.IntegerField()
+    is_stuff = models.IntegerField()
     delete_date = models.DateTimeField(blank=True, null=True)
     update_date = models.DateTimeField(blank=True, null=True)
     create_date = models.DateTimeField(blank=True, null=True)
-   
-    is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
-    is_staff = models.BooleanField(default=False)
-
-    objects = UserManager()
-
-    USERNAME_FIELD = 'login'
-    REQUIRED_FIELDS = []
-
-    def __str__(self):
-        return self.login
-
-    def get_full_name(self):
-        return self.login
-
-
-    def get_short_name(self):
-        return self.login
 
     class Meta:
+        managed = False
         db_table = 'users'
-        unique_together = (('login', 'email_code'))
+        unique_together = (('login', 'email_code'),)

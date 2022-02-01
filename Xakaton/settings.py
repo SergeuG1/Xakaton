@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-o9er^ntpd4#qn%8n&a)kfsv_d!77g(3+oqh_y1b-l=jcj-j)p*
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
-AUTH_USER_MODEL = 'users.Users'
+# AUTH_USER_MODEL = 'users.Users'
 
 # Application definition
 
@@ -79,23 +79,23 @@ WSGI_APPLICATION = 'Xakaton.wsgi.application'
 
 DATABASES = {
   
-    # 'default': {
-    # 'ENGINE': 'django.db.backends.mysql', 
-    # 'NAME': 'hackaton',
-    # 'USER': 'root',
-    # 'PASSWORD': '',
-    # 'HOST': '164.92.215.12',
-    # 'PORT': '3306',
-    # }
-
     'default': {
     'ENGINE': 'django.db.backends.mysql', 
-    'NAME': 'test_django',
+    'NAME': 'hackaton',
     'USER': 'root',
     'PASSWORD': '',
     'HOST': '164.92.215.12',
     'PORT': '3306',
     }
+
+    # 'default': {
+    # 'ENGINE': 'django.db.backends.mysql', 
+    # 'NAME': 'test_django',
+    # 'USER': 'root',
+    # 'PASSWORD': '',
+    # 'HOST': '164.92.215.12',
+    # 'PORT': '3306',
+    # }
    # local
     #  'default': {
     #     'ENGINE': 'django.db.backends.sqlite3', 
@@ -136,7 +136,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-ru'
+LANGUAGE_CODE = 'ru'
 
 TIME_ZONE = 'UTC'
 

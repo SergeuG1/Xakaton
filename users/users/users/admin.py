@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.shortcuts import render
 from users.models import *
 from django_admin_geomap import ModelAdmin
-from django.contrib.auth.admin import UserAdmin
+
 from users.forms import SendEmailFrom
 
 
@@ -40,6 +40,8 @@ class AdminApplicationsEmail(admin.ModelAdmin):
             data.append(x.email)
 
         return render(request, 'admin/send_mail.html',context={'email': data, 'forms':SendEmailFrom})
+      
+
 
 
 admin.site.register(AdminApplications, AdminApplicationsEmail)
