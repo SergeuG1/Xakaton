@@ -32,7 +32,7 @@ class Admin(ModelAdmin, ApplicationAdmin):
     geomap_field_longitude = "longitude"
     geomap_field_latitude = "latitude"
     geomap_default_zoom = "11"
-    geomap_item_zoom = "5"
+    geomap_item_zoom = "11"
     geomap_default_longitude = "37.8022"
     geomap_default_latitude = "48.023"
 
@@ -77,10 +77,36 @@ class UserAdmin(admin.ModelAdmin):
     list_display = ("login","password","role")
     search_fields  = ("login",)
 
+
 class ExecutiveAuthorityAdmin(admin.ModelAdmin):
     list_display = ("title","hash_tag","web_site_link")
     search_fields  = ("title","hash_tag",)
 
+class ApplicationsCategoriesAdmin(admin.ModelAdmin):
+    list_display = ("application","category")
+    
+
+    # def changelist_view(self, request, extra_context=None):
+      
+    #     chart_data = (
+    #     ApplicationsCategories.objects.annotate(date=TruncDay("application__create_date"))
+    #     .values("date")
+    #     .annotate(y=Count("id"))
+    #      )
+
+    #     as_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
+    #     print(as_json)
+    #     extra_context = extra_context or {"chart_data": as_json}
+
+    #     return super().changelist_view(request, extra_context=extra_context)
+
+
+
+
+
+
+
+    
 
 
 admin.site.register(AdminApplications, AdminApplicationsEmail)
@@ -95,6 +121,6 @@ admin.site.register(News)
 admin.site.register(ExecutiveAuthority, ExecutiveAuthorityAdmin)
 admin.site.register(MailingQueue)
 admin.site.register(ApplicationStatus)
-admin.site.register(ApplicationsCategories)
+admin.site.register(ApplicationsCategories, ApplicationsCategoriesAdmin)
 admin.site.register(TokenBlocklist)
 

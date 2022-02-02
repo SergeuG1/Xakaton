@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const ctx = document.getElementById('myChart').getContext('2d');
 
   const chartData = {{ chart_data | safe}};
-
+  console.log(chartData);
 
   chartData.forEach((d) => {
     d.x = new Date(d.date);
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 {% block content %}
 
-{% if request.path == '/admin/users/applications/' or request.path == '/admin/users/users/' %}
+{% if request.path == '/admin/users/applications/' or request.path == '/admin/users/applicationscategories/' %}
 <div style="width: 80%;">
   <canvas style="margin-bottom: 30px; width: 60%; height: 50%;" id="myChart"></canvas>
 </div>

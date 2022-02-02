@@ -75,7 +75,7 @@ class Applications(models.Model, GeoItem):
     views_count = models.IntegerField()
 
     def __str__(self):
-        return self.user
+        return self.user.login
 
     class Meta:
         managed = False
@@ -85,8 +85,6 @@ class Applications(models.Model, GeoItem):
         db_table = "applications"
         ordering = ("status", "user")
 
-    def __str__(self):
-        return f"{self.status} - {self.status.title}"
 
     @property
     def geomap_longitude(self):
@@ -111,12 +109,16 @@ class ApplicationsCategories(models.Model):
 
     def __str__(self):
         return self.application.user.login
+  
 
+        
     class Meta:
         managed = False
         db_table = "applications_categories"
         verbose_name = "Категория заявления"
         verbose_name_plural = "Категории заявлений"
+
+
 
 
 class ContractorsProblems(models.Model):
