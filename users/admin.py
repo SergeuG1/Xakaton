@@ -4,15 +4,28 @@ from users.models import *
 from django_admin_geomap import ModelAdmin
 from django.contrib.auth.admin import UserAdmin
 from users.forms import SendEmailFrom
-
-
+from django.db.models.functions import TruncDay
+from django.db.models import Count
+from django.core.serializers.json import DjangoJSONEncoder
+import json
 
 class ApplicationAdmin(admin.ModelAdmin):
     list_display = ("user","create_date","problem_desc", "status")
     search_fields  = ("problem_desc","user__login","status__title")
     list_filter = ("status",)
+    change_list_template = 'admin/change_list.html'
 
-    
+    def changelist_view(self, request, extra_context=None):
+        chart_data = (
+            Applications.objects.annotate(date=TruncDay("create_date"))
+            .values("date")
+            .annotate(y=Count("id"))
+        )
+
+        as_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
+        extra_context = extra_context or {"chart_data": as_json}
+
+        return super().changelist_view(request, extra_context=extra_context)
 
 
 class Admin(ModelAdmin, ApplicationAdmin):
@@ -23,6 +36,17 @@ class Admin(ModelAdmin, ApplicationAdmin):
     geomap_default_longitude = "37.8022"
     geomap_default_latitude = "48.023"
 
+    def changelist_view(self, request, extra_context=None):
+        chart_data = (
+            Applications.objects.annotate(date=TruncDay("create_date"))
+            .values("date")
+            .annotate(y=Count("id"))
+        )
+
+        as_json = json.dumps(list(chart_data), cls=DjangoJSONEncoder)
+        extra_context = extra_context or {"chart_data": as_json}
+
+        return super().changelist_view(request, extra_context=extra_context)
     class Meta:
         proxy = True
 
