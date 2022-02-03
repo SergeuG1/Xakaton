@@ -99,6 +99,12 @@ class Applications(models.Model, GeoItem):
         return self.default_icon
 
     @property
+    def geomap_popup_view(self):
+        return "{}<br/><br/><strong>{}</strong>".format(self.address,self.problem_desc)
+
+
+
+    @property
     def geomap_popup_edit(self):
         return self.geomap_popup_view
 

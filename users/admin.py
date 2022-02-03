@@ -52,16 +52,7 @@ class Admin(ModelAdmin, ApplicationAdmin):
 
 
 class AdminApplicationsEmail(admin.ModelAdmin):
-    actions = ["bulk_email"]
-    def bulk_email(self, request, queryset):
-        """ Make all posts published. """
-        data = []
-        for x in queryset:
-            data.append(x.email)
-
-        return render(request, 'admin/send_mail.html',context={'email': data, 'forms':SendEmailFrom})
-
-
+    ...
 
 
 
@@ -72,6 +63,17 @@ class RegionAdmin(admin.ModelAdmin):
 class UserProfilesAdmin(admin.ModelAdmin):
     list_display = ("name","user","email","rate")
     search_fields  = ("name","user","phone_number")
+
+    actions = ["bulk_email"]
+    def bulk_email(self, request, queryset):
+        """ Make all posts published. """
+        data = []
+        for x in queryset:
+            data.append(x.email)
+
+        return render(request, 'admin/send_mail.html',context={'email': data, 'forms':SendEmailFrom})
+
+
 
 class UserAdmin(admin.ModelAdmin):
     list_display = ("login","password","role")
